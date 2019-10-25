@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Node2D.gd" type="Script" id=1]
+[ext_resource path="res://background.jpg" type="Texture" id=2]
+
+[node name="CanvasLayer" type="CanvasLayer"]
+
+[node name="Node2D" type="Node2D" parent="."]
+script = ExtResource( 1 )
+texture = ExtResource( 2 )
