@@ -20,15 +20,19 @@ func _ready():
 func _draw():
 	draw_texture(texture,Vector2())
 	
-	for x in range(0,10):
-		print(screensize.x / 10 * x)
-		draw_line(Vector2(screensize.x / 10 * x,0),Vector2(screensize.x / 10 * x,screensize.y),Color(30,40,110),2)
-	for y in range(0,10):
-		draw_line(Vector2(0,screensize.y / 10 * y), Vector2(screensize.x,screensize.y / 10 * y), Color(30,40,110),2) 
-	
+	for x in range(0,14):
+	#	print(screensize.x / 10 * x)
+	#	draw_line(Vector2(screensize.x / 10 * x,0),Vector2(screensize.x / 10 * x,screensize.y),Color(30,40,110),2)
+		# vertical from left to right 
+		draw_line(Vector2( x*100,0),Vector2(x*100,700),Color(30,40,110),2)
+		
+	for y in range(0,8):
+		# horizontal lines from top to down
+		draw_line(Vector2(0, y*100), Vector2(1300, y*100), Color(30,40,110),2) 
+		
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	screensize = get_viewport_rect().size
-	print(screensize)
+	
