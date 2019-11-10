@@ -1,5 +1,8 @@
 extends Node2D
 
+
+var wrong = false
+
 export (Texture) var texture setget _set_texture
 # Declare member variables here. Examples:
 # var a = 2
@@ -29,10 +32,11 @@ func _draw():
 	for y in range(0,8):
 		# horizontal lines from top to down
 		draw_line(Vector2(0, y*100), Vector2(1300, y*100), Color(30,40,110),2) 
-		
+
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	update()
 	screensize = get_viewport_rect().size
 	

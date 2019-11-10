@@ -1,16 +1,35 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Board.gd" type="Script" id=1]
 [ext_resource path="res://monsters/mudcrawler/Mudcrawler.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Node2D.gd" type="Script" id=3]
 [ext_resource path="res://background.jpg" type="Texture" id=4]
 
-[node name="CanvasLayer" type="CanvasLayer"]
-layer = -5
+[sub_resource type="DynamicFontData" id=1]
+font_path = "res://Arial.ttf"
+
+[sub_resource type="DynamicFont" id=2]
+size = 40
+font_data = SubResource( 1 )
+
+[node name="HUD" type="Control"]
 script = ExtResource( 1 )
 mudcrawler = ExtResource( 2 )
+
+[node name="Button" type="Button" parent="."]
+margin_left = 1126.96
+margin_top = -2.78952
+margin_right = 1301.96
+margin_bottom = 49.2105
+custom_fonts/font = SubResource( 2 )
+text = "Attacca"
+
+[node name="ButtonTimer" type="Timer" parent="."]
+wait_time = 2.0
 
 [node name="Node2D" type="Node2D" parent="."]
 z_index = -3
 script = ExtResource( 3 )
 texture = ExtResource( 4 )
+[connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
+[connection signal="timeout" from="ButtonTimer" to="." method="_on_ButtonTimer_timeout"]

@@ -1,4 +1,4 @@
-extends CanvasLayer
+extends Control
 
 # Declare member variables here. Examples:
 # var a = 2
@@ -11,18 +11,49 @@ var board =  []
 #print(board)
 var x = 0
 var y = 0
+var line = ""
+var mon_count = 0
+var locked = false
+var hello = "hello"
+var cross = preload("res://Cross.tscn")
 # Called when the node enters the scene tree for the first time.
+
+
+func prettyprint(board):
+	print(board)
+	var x2 = 0
+	var y2 = 0
+	for y2 in range(board.size()):
+		line = ""
+		for x2 in range(board[y2].size()):
+			line += "| "+ str(board[y2][x2]) + " | "
+			
+		print(line)
+
+
 func _ready():
-	for y in range(8):
+	# create empty array
+	for y in range(7):
 		board.append([])
 		board[y].resize(13)
 		for x in range(13):
 			board[y][x] = 0
+			
 
-	#var board = []
+	print("empty board:")
+	prettyprint(board)
+	x = 0
+	y = 0
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	#elif $ButtonTimer.is_stopped():
+	#	$Button.text = "Attack"
+	
+	if mon_count < 4:
+		$Button.hide()
+	else:
+		$Button.show()
 	
 	if Input.is_action_just_pressed("ui_left"):
 		if counter == 1 and x > 0:
@@ -55,15 +86,67 @@ func _process(delta):
 			counter += 1
 		
 	if Input.is_action_just_pressed("enter"):
-		#if counter == 1:
-		board[y][x] = 1
-		counter = 0
-		print(board)
-			
-		
+		if counter == 1:
+			if board[y][x] == 0:
+				board[y][x] = 1
+				counter = 0
+				mon_count += 1
+				prettyprint(board)
+				spawn_x(y, x) 
+				x = 0
+				y = 0
+				
+			else:
+				print(board)
+				print("not possible")
+				
+				#$Node2D.draw_line(Vector2(50,50),Vector2(500,500),Color.red)
 	#if Input.is_action_just_pressed("
 		
+
+func _on_Button_pressed():
+	var minions = get_tree().get_nodes_in_group("monsters")
+	var crosses = get_tree().get_nodes_in_group("crosses")
+	print(crosses)
+				
+	locked = false
+	for m in minions:
+			if m.moving == true:
+				locked = true
+				break
+	
+	
+	if locked == false:
+		$ButtonTimer.start()
+		$Button.text = "Wait.."
 		
-		
-		
-		
+		for c in crosses:
+					c.queue_free()
+	
+		# move the little figures
+		for m in minions:
+			if m.position.x < 1250:
+				print(board[x])
+				#e._move()
+				print("i am at postiont", m.position.x)
+				m.moving = true
+				
+				m.new_position = m.position + Vector2(100,0)
+			
+	
+
+func spawn_x(y,x):
+
+	var c = cross.instance()
+	#c.position.x = get_parent().board[x][y]
+
+	c.position = Vector2(50+ x * 100,50+ y * 100)
+	c.add_to_group("crosses")	
+
+	add_child(c)
+	
+func _on_ButtonTimer_timeout():
+	print("ciao")
+	$Button.text = "Attacca"
+	
+	
