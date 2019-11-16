@@ -1,15 +1,20 @@
-extends KinematicBody2D
-
+extends Area2D
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
 var active = true
 var moving
 var new_position
+export (PackedScene) var label
 var board = load("res://Board.gd")
+var moving_points = 0
+var moving_bonus = 2
+var moving_cost = 5 #per grid
+var l
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	l = Label.new()
 	$AnimatedSprite.play("normal")
 	
 	new_position = Vector2(0,0)
@@ -17,11 +22,17 @@ func _ready():
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	
+	
+	var l = label.instance()
+	l.text = "moving points " + str(moving_points) 
+	l.rect_position = Vector2(position.x, position.y + 25) 
 	#$circle.draw_circle(Vector2(50,50),50,Color.blue)
 	if moving:
 		$AnimatedSprite.play("walk")
+		$circle.hide()
 		if self.position.x < self.new_position.x:
-		    	self.position.x += 1
+			self.position.x += 1
 		else:
 			self.position = self.new_position
 			$AnimatedSprite.play("normal")
@@ -31,9 +42,10 @@ func _process(delta):
 		$AnimatedSprite.play("normal")
 	
 	if active:
+		$AnimationPlayer.play("effect")
 		if Input.is_action_just_pressed("enter"):
 			$circle.modulate = Color.red
-		
+			$AnimationPlayer.stop()
 			active = false
 			
 		if Input.is_action_just_pressed("ui_right"):
