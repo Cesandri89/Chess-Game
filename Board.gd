@@ -14,7 +14,6 @@ var x = 0
 var y = 0
 var line = ""
 var mon_count = 0
-var locked = false
 var hello = "hello"
 var cross = preload("res://Cross.tscn")
 # Called when the node enters the scene tree for the first time.
@@ -40,7 +39,6 @@ func _ready():
 		for x in range(13):
 			board[y][x] = 0
 			
-
 	print("empty board:")
 	prettyprint(board)
 	x = 0
@@ -127,31 +125,34 @@ func _on_Button_pressed():
 	print(crosses)
 	print("hallo")
 	
-	locked = false
+	#for m in minions:
+		#m.animation = true 
+	#	m._move(100,0)
+		#m.moving = false
+		
+		#if m.moving == true:
+		#	locked = true
+		#	break 
 	for m in minions:
-		if m.moving == true:
-			locked = true
-			break
-	
-	
-	if locked == false:
-		$ButtonTimer.start()
-		$Button.text = "Wait.."
+		if m.locked:
+			$ButtonTimer.start()
+			$Button.text = "Wait.."
+			
+			for c in crosses:
+						c.queue_free()
 		
-		for c in crosses:
-					c.queue_free()
-	
-		# move the little figures
-		for m in minions:
-			#if m.position.x < 1250:
-			print(board[x])
-			#e._move()
-			print("i am at postiont", m.position.x)			
-			if m.position.x < 1250:
-				m.moving = true	
-				m.new_position = m.position + Vector2(100,0)
+		else:
+			# move the little figures
+			for m in minions:
+				#if m.position.x < 1250:
+				print(board[x])
+				#e._move()
+				print("i am at postiont", m.position.x)			
+				m._move(100,0)
+				#m.moving = true	
+				#m.new_position = m.position + Vector2(100,0)
+					
 				
-		
 
 func spawn_x(y,x):
 

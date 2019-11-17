@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Board.gd" type="Script" id=1]
 [ext_resource path="res://monsters/mudcrawler/Mudcrawler.tscn" type="PackedScene" id=2]
@@ -11,14 +11,11 @@ _bundled = {
 "conn_count": 0,
 "conns": PoolIntArray(  ),
 "editable_instances": [  ],
-"names": PoolStringArray( "Label", "margin_right", "margin_bottom", "text", "__meta__" ),
-"node_count": 1,
+"names": PoolStringArray(  ),
+"node_count": 0,
 "node_paths": [  ],
-"nodes": PoolIntArray( -1, -1, 0, 0, -1, 4, 1, 0, 2, 1, 3, 2, 4, 3, 0 ),
-"variants": [ 40.0, 14.0, "
-", {
-"_edit_use_anchors_": false
-} ],
+"nodes": PoolIntArray(  ),
+"variants": [  ],
 "version": 2
 }
 
@@ -28,6 +25,9 @@ font_path = "res://Arial.ttf"
 [sub_resource type="DynamicFont" id=3]
 size = 43
 font_data = SubResource( 2 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 30.4037, 348.825 )
 
 [node name="HUD" type="Control"]
 script = ExtResource( 1 )
@@ -48,9 +48,10 @@ texture = ExtResource( 4 )
 script = ExtResource( 3 )
 
 [node name="Button" type="Button" parent="."]
-margin_left = 1129.85
-margin_right = 1299.85
-margin_bottom = 65.0
+margin_left = 577.632
+margin_top = 10.1623
+margin_right = 747.632
+margin_bottom = 70.1623
 custom_fonts/font = SubResource( 3 )
 text = "Attacca"
 __meta__ = {
@@ -60,5 +61,25 @@ __meta__ = {
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="MonsterContainer" type="Node" parent="."]
+
+[node name="Border1" type="Area2D" parent="." groups=[
+"borders",
+]]
+position = Vector2( 1303.99, 350 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Border1"]
+shape = SubResource( 4 )
+
+[node name="Border2" type="Area2D" parent="."]
+position = Vector2( 0, 350 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Border2"]
+shape = SubResource( 4 )
 [connection signal="timeout" from="ButtonTimer" to="." method="_on_ButtonTimer_timeout"]
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
