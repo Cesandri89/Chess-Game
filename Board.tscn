@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Board.gd" type="Script" id=1]
 [ext_resource path="res://monsters/mudcrawler/Mudcrawler.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Node2D.gd" type="Script" id=3]
-[ext_resource path="res://background.jpg" type="Texture" id=4]
-[ext_resource path="res://Background.gd" type="Script" id=5]
+[ext_resource path="res://marble_background.jpg" type="Texture" id=4]
+[ext_resource path="res://Arial.ttf" type="DynamicFontData" id=5]
+[ext_resource path="res://Not_Possible.tscn" type="PackedScene" id=6]
 
 [sub_resource type="PackedScene" id=1]
 _bundled = {
@@ -19,6 +20,24 @@ _bundled = {
 "version": 2
 }
 
+[sub_resource type="DynamicFontData" id=5]
+font_path = "res://Arial.ttf"
+
+[sub_resource type="DynamicFont" id=6]
+size = 40
+font_data = SubResource( 5 )
+
+[sub_resource type="DynamicFontData" id=7]
+font_path = "res://Arial.ttf"
+
+[sub_resource type="DynamicFont" id=8]
+size = 40
+font_data = SubResource( 7 )
+
+[sub_resource type="DynamicFont" id=9]
+size = 40
+font_data = ExtResource( 5 )
+
 [sub_resource type="DynamicFontData" id=2]
 font_path = "res://Arial.ttf"
 
@@ -29,38 +48,102 @@ font_data = SubResource( 2 )
 [sub_resource type="RectangleShape2D" id=4]
 extents = Vector2( 30.4037, 348.825 )
 
-[node name="HUD" type="Control"]
+[node name="Board" type="Control"]
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 mudcrawler = ExtResource( 2 )
 label = SubResource( 1 )
+not_possible = ExtResource( 6 )
 
 [node name="ButtonTimer" type="Timer" parent="."]
 wait_time = 2.0
 
-[node name="Background" type="Node2D" parent="."]
-script = ExtResource( 5 )
+[node name="TextureRect" type="TextureRect" parent="."]
+margin_right = 1300.0
+margin_bottom = 700.0
 texture = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Grid" type="Node2D" parent="."]
 script = ExtResource( 3 )
 
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Player1" type="Label" parent="CanvasLayer"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 194.0
+margin_bottom = 67.0
+custom_fonts/font = SubResource( 6 )
+custom_colors/font_color = Color( 0.423529, 1, 0, 1 )
+text = "Player 1: "
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Player2" type="Label" parent="CanvasLayer"]
+margin_left = 900.0
+margin_top = 10.0
+margin_right = 1084.0
+margin_bottom = 67.0
+custom_fonts/font = SubResource( 6 )
+custom_colors/font_color = Color( 0.14902, 1, 0, 1 )
+text = "Player 2:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Gold_Player1" type="Label" parent="CanvasLayer"]
+margin_left = 175.6
+margin_top = 10.0
+margin_right = 270.6
+margin_bottom = 56.0
+custom_fonts/font = SubResource( 8 )
+custom_colors/font_color = Color( 0.92549, 0.929412, 0.172549, 1 )
+custom_colors/font_color_shadow = Color( 0.568627, 0.623529, 0, 1 )
+text = "Gold:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Gold_Player2" type="Label" parent="CanvasLayer"]
+margin_left = 1069.29
+margin_top = 10.0
+margin_right = 1164.29
+margin_bottom = 56.0
+custom_fonts/font = SubResource( 8 )
+custom_colors/font_color = Color( 0.92549, 0.929412, 0.172549, 1 )
+custom_colors/font_color_shadow = Color( 0.694118, 0.690196, 0, 1 )
+text = "Gold:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Purchase_Monster" type="Button" parent="."]
+margin_left = 559.0
+margin_top = 1.0
+margin_right = 893.0
+margin_bottom = 61.0
+custom_fonts/font = SubResource( 9 )
+text = "Purchase Monster"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Button" type="Button" parent="."]
-margin_left = 577.632
-margin_top = 10.1623
-margin_right = 747.632
-margin_bottom = 70.1623
+margin_left = 382.188
+margin_top = 3.90842
+margin_right = 552.188
+margin_bottom = 63.9084
 custom_fonts/font = SubResource( 3 )
 text = "Attacca"
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="MonsterContainer" type="Node" parent="."]
 
 [node name="Border1" type="Area2D" parent="." groups=[
 "borders",
@@ -82,4 +165,5 @@ __meta__ = {
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Border2"]
 shape = SubResource( 4 )
 [connection signal="timeout" from="ButtonTimer" to="." method="_on_ButtonTimer_timeout"]
+[connection signal="pressed" from="Purchase_Monster" to="." method="_on_Purchase_Monster_pressed"]
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]

@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Not_Possible.gd" type="Script" id=1]
+
+[sub_resource type="DynamicFontData" id=1]
+font_path = "res://Arial.ttf"
+
+[sub_resource type="DynamicFont" id=2]
+size = 15
+outline_color = Color( 0.541176, 0.0745098, 0.0745098, 1 )
+font_data = SubResource( 1 )
+
+[node name="Not_Possible" type="Label"]
+margin_right = 40.0
+margin_bottom = 14.0
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 1, 0, 0, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+text = "Not Possible"
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

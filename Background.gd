@@ -18,7 +18,8 @@ func _set_texture(value):
 
 
 func _draw():
-	draw_texture(texture,Vector2())
+	pass
+	#draw_texture(texture,Vector2())
 	
 	
 	

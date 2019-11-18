@@ -5,18 +5,33 @@ extends Control
 # var b = "text"
 export (PackedScene) var mudcrawler 
 export (PackedScene) var label
-var active = true
-var counter = 0
-var a = null
-var board =  []
+export (PackedScene) var not_possible
+var active = true # ob sich der Kreis bewegt
+var counter = 0 # ob eine Figur zum Setzten ausgewaehlt ist
+var a = null # represent the mudcrawler instance
+var board =  [] # print the chess board
 #print(board)
-var x = 0
-var y = 0
+var x = 0 # x index of board starting with 0
+var y = 0 # y index of board starting with 0
 var line = ""
-var mon_count = 0
-var hello = "hello"
+var mon_count = 0 # how many monsters are placed in the board
+var hello = "hello" 
 var cross = preload("res://Cross.tscn")
+var active_player # one or two
+var gold1 #inizialize gold amount of player1
+var gold2 #inizialize gold amount of player2
 # Called when the node enters the scene tree for the first time.
+func _spawn_monster(x,y):
+	var a = mudcrawler.instance()
+	a.add_to_group("monsters")
+	#l.text = "mp " + str(a.moving_points)
+	#l.add_color_override("font_color", Color.blue)
+	#l.rect_position = Vector2(a.position.x + 5, a.position.y + 80)
+	add_child(a)
+	a.position = Vector2(x,y)
+	counter += 1
+
+
 
 
 func prettyprint(board):
@@ -32,6 +47,9 @@ func prettyprint(board):
 
 
 func _ready():
+	gold1 = 10
+	gold2 = 10
+	active_player = 1
 	# create empty array
 	for y in range(7):
 		board.append([])
@@ -46,6 +64,14 @@ func _ready():
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	$CanvasLayer/Gold_Player1.text = "Gold: " + str(gold1)
+	$CanvasLayer/Gold_Player2.text = "Gold: " + str(gold2) 
+	if active_player == 1:
+		$CanvasLayer/Player1.modulate = Color.lightblue
+		$CanvasLayer/Player2.modulate = Color.black
+	elif active_player == 2:
+		$CanvasLayer/Player2.modulate = Color.lightblue
+		$CanvasLayer/Player1.modulate = Color.black
 	#elif $ButtonTimer.is_stopped():
 	#	$Button.text = "Attack"
 	
@@ -53,6 +79,11 @@ func _process(delta):
 		$Button.hide()
 	else:
 		$Button.show()
+	
+	if Input.is_action_pressed("c"):
+		active_player = 1
+	else:
+		active_player = 2
 	
 	if Input.is_action_just_pressed("ui_left"):
 		if counter == 1 and x > 0:
@@ -79,34 +110,43 @@ func _process(delta):
 		
 		# create new
 		if counter == 0:
-			var a = mudcrawler.instance()
-			var l = Label.new()
-			a.add_to_group("monsters")
-			#l.text = "mp " + str(a.moving_points)
-			#l.add_color_override("font_color", Color.blue)
-			#l.rect_position = Vector2(a.position.x + 5, a.position.y + 80)
-			l.add_to_group("labels")
-			add_child(a)
-			add_child(l)
-			a.position = Vector2(50,50)
-			counter += 1
+			_spawn_monster(50,50)
 		
 	
 	if Input.is_action_just_pressed("enter"):
+		print(counter)
 		if counter == 1:
+			#if active_player == 1 and gold1 > 5:
+			#	_spawn_monster()
+				
+			print("figure active!")
 			if board[y][x] == 0:
 				board[y][x] = 1
 				counter = 0
 				mon_count += 1
 				prettyprint(board)
-				spawn_x(y, x) 
+				#spawn_x(y, x) 
 				x = 0
 				y = 0
+				Globals.occupato = false
 				
 			else:
+				print("x, y : ", x, y )
+				Globals.occupato = true
 				print(board)
-				print("not possible")
-	
+				var f = not_possible.instance()
+				add_child(f)
+				f.rect_position = Vector2( x* 100 + 10, y * 100)
+				#var f = Label.new()
+				#f.text = "not possible"
+				#f.modulate = Color.red
+				#var t = Tween.new()
+				#f.add_child(t)
+				#add_child(f)
+				#t.interpolate_property(f, "rect_position", Vector2(x * 100 + 10, y * 100), Vector2(x * 100, y * 100 - 200), 3.0 , Tween.TRANS_LINEAR, Tween.EASE_OUT )
+				#t.start()
+				
+				
 	var labels = get_tree().get_nodes_in_group("labels")
 	var minions = get_tree().get_nodes_in_group("monsters")
 	for l in labels:
@@ -168,4 +208,11 @@ func _on_ButtonTimer_timeout():
 	print("ciao")
 	$Button.text = "Attacca"
 	
-	
+
+
+
+func _on_Purchase_Monster_pressed():
+	if  gold1 >= 5:
+		if counter == 0:
+			_spawn_monster(50,50)
+			gold1 -= 5

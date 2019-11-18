@@ -50,11 +50,13 @@ func _process(delta):
 		
 	if active:
 		$AnimationPlayer.play("effect")
+		
 		if Input.is_action_just_pressed("enter"):
-			$circle.modulate = Color.red
-			$AnimationPlayer.stop()
-			active = false
-			
+			if Globals.occupato == false:
+				$circle.modulate = Color.red
+				$AnimationPlayer.stop()
+				active = false
+					
 		if Input.is_action_just_pressed("ui_right"):
 			# move right
 			print("right")
