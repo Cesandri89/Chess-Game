@@ -1,6 +1,6 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=28 format=2]
 
-[ext_resource path="res://Area2D.gd" type="Script" id=1]
+[ext_resource path="res://Monster.gd" type="Script" id=1]
 [ext_resource path="res://monsters/mudcrawler/giant-mudcrawler.png" type="Texture" id=2]
 [ext_resource path="res://monsters/mudcrawler/giant-mudcrawler-death1.png" type="Texture" id=3]
 [ext_resource path="res://monsters/mudcrawler/giant-mudcrawler-death2.png" type="Texture" id=4]
@@ -31,14 +31,14 @@ animations = [ {
 "name": "normal",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ) ],
-"loop": true,
-"name": "death",
-"speed": 5.0
-}, {
 "frames": [ ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 19 ), ExtResource( 20 ) ],
 "loop": true,
 "name": "attack",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ) ],
+"loop": true,
+"name": "death",
 "speed": 5.0
 }, {
 "frames": [ ExtResource( 21 ), ExtResource( 22 ) ],
@@ -59,6 +59,23 @@ animations = [ {
 "speed": 5.0
 } ]
 
+[sub_resource type="Animation" id=4]
+resource_name = "effect"
+length = 2.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("circle:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1, 2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 0.7, 0.7 ), Vector2( 1, 1 ) ]
+}
+
 [node name="Area2D" type="Area2D"]
 script = ExtResource( 1 )
 
@@ -70,5 +87,11 @@ animation = "defend"
 shape = SubResource( 2 )
 
 [node name="circle" type="AnimatedSprite" parent="."]
+scale = Vector2( 0.71723, 0.71723 )
 frames = SubResource( 3 )
 animation = "circle"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/effect = SubResource( 4 )
+
+[node name="Tween" type="Tween" parent="."]

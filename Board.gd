@@ -11,6 +11,7 @@ var counter = 0 # ob eine Figur zum Setzten ausgewaehlt ist
 var a = null # represent the mudcrawler instance
 var board =  [] # print the chess board
 #print(board)
+var menu_visible = true
 var x = 0 # x index of board starting with 0
 var y = 0 # y index of board starting with 0
 var line = ""
@@ -21,14 +22,21 @@ var active_player # one or two
 var gold1 #inizialize gold amount of player1
 var gold2 #inizialize gold amount of player2
 # Called when the node enters the scene tree for the first time.
-func _spawn_monster(x,y):
+func _spawn_monster(active_player):
 	var a = mudcrawler.instance()
 	a.add_to_group("monsters")
+	a.player_tag = active_player
+	if active_player == 1:
+		x = 0
+		y = 0
+	else:
+		x = 13
+		y = 1
+		
 	#l.text = "mp " + str(a.moving_points)
 	#l.add_color_override("font_color", Color.blue)
 	#l.rect_position = Vector2(a.position.x + 5, a.position.y + 80)
 	add_child(a)
-	a.position = Vector2(x,y)
 	counter += 1
 
 
@@ -47,8 +55,14 @@ func prettyprint(board):
 
 
 func _ready():
-	gold1 = 10
-	gold2 = 10
+	
+	$MenuBackground.hide()
+	var menu_objects = get_tree().get_nodes_in_group("menu_objects")
+	for e in menu_objects:
+		e.hide()
+	menu_visible = false
+	gold1 = 100
+	gold2 = 100
 	active_player = 1
 	# create empty array
 	for y in range(7):
@@ -59,19 +73,19 @@ func _ready():
 			
 	print("empty board:")
 	prettyprint(board)
-	x = 0
-	y = 0
+	#x = 0
+	#y = 0
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	$CanvasLayer/Gold_Player1.text = "Gold: " + str(gold1)
-	$CanvasLayer/Gold_Player2.text = "Gold: " + str(gold2) 
+	$HUD/Gold_Player1.text = "Gold: " + str(gold1)
+	$HUD/Gold_Player2.text = "Gold: " + str(gold2) 
 	if active_player == 1:
-		$CanvasLayer/Player1.modulate = Color.lightblue
-		$CanvasLayer/Player2.modulate = Color.black
+		$HUD/Player1.modulate = Color.lightblue
+		$HUD/Player2.modulate = Color.black
 	elif active_player == 2:
-		$CanvasLayer/Player2.modulate = Color.lightblue
-		$CanvasLayer/Player1.modulate = Color.black
+		$HUD/Player2.modulate = Color.lightblue
+		$HUD/Player1.modulate = Color.black
 	#elif $ButtonTimer.is_stopped():
 	#	$Button.text = "Attack"
 	
@@ -80,11 +94,12 @@ func _process(delta):
 	else:
 		$Button.show()
 	
-	if Input.is_action_pressed("c"):
-		active_player = 1
-	else:
-		active_player = 2
-	
+	if Input.is_action_just_pressed("c"):
+		if active_player == 1:
+			active_player = 2
+		else:
+			active_player = 1
+			
 	if Input.is_action_just_pressed("ui_left"):
 		if counter == 1 and x > 0:
 			x -= 1
@@ -110,7 +125,7 @@ func _process(delta):
 		
 		# create new
 		if counter == 0:
-			_spawn_monster(50,50)
+			_spawn_monster(active_player)
 		
 	
 	if Input.is_action_just_pressed("enter"):
@@ -129,6 +144,8 @@ func _process(delta):
 				x = 0
 				y = 0
 				Globals.occupato = false
+			
+				
 				
 			else:
 				print("x, y : ", x, y )
@@ -188,7 +205,13 @@ func _on_Button_pressed():
 				print(board[x])
 				#e._move()
 				print("i am at postiont", m.position.x)			
-				m._move(100,0)
+				var direction = 0
+				if active_player == 1:
+					direction = 1
+				else:
+					direction = -1
+				
+				m._move(100 * direction ,0)
 				#m.moving = true	
 				#m.new_position = m.position + Vector2(100,0)
 					
@@ -209,10 +232,34 @@ func _on_ButtonTimer_timeout():
 	$Button.text = "Attacca"
 	
 
-
-
-func _on_Purchase_Monster_pressed():
+func _on_Purchase_Monster_button_down():
 	if  gold1 >= 5:
 		if counter == 0:
-			_spawn_monster(50,50)
+			_spawn_monster(active_player)
 			gold1 -= 5
+
+
+func _on_MenuButton_button_down():
+	var menu_objects = get_tree().get_nodes_in_group("menu_objects")
+	if menu_visible == false:
+		$MenuBackground.show()
+		for e in menu_objects:
+			e.show()
+			
+		menu_visible = true
+		$MenuBackground.modulate = Color(0,0,0,0.1)
+		$MenuBackground.rect_size = Vector2(1300,70)
+		
+		
+	else:
+		$MenuBackground.hide()
+		for e in menu_objects:
+			e.hide()
+		menu_visible = false
+		
+		
+	
+
+
+
+	

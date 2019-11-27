@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://Board.gd" type="Script" id=1]
 [ext_resource path="res://monsters/mudcrawler/Mudcrawler.tscn" type="PackedScene" id=2]
@@ -20,37 +20,45 @@ _bundled = {
 "version": 2
 }
 
-[sub_resource type="DynamicFontData" id=5]
+[sub_resource type="DynamicFontData" id=2]
 font_path = "res://Arial.ttf"
+
+[sub_resource type="DynamicFont" id=3]
+size = 40
+font_data = SubResource( 2 )
+
+[sub_resource type="DynamicFontData" id=4]
+font_path = "res://Arial.ttf"
+
+[sub_resource type="DynamicFont" id=5]
+size = 40
+font_data = SubResource( 4 )
 
 [sub_resource type="DynamicFont" id=6]
 size = 40
-font_data = SubResource( 5 )
+font_data = ExtResource( 5 )
 
 [sub_resource type="DynamicFontData" id=7]
 font_path = "res://Arial.ttf"
 
 [sub_resource type="DynamicFont" id=8]
-size = 40
+size = 43
 font_data = SubResource( 7 )
 
-[sub_resource type="DynamicFont" id=9]
-size = 40
-font_data = ExtResource( 5 )
+[sub_resource type="RectangleShape2D" id=9]
+extents = Vector2( 30.4037, 348.825 )
 
-[sub_resource type="DynamicFontData" id=2]
+[sub_resource type="DynamicFontData" id=10]
 font_path = "res://Arial.ttf"
 
-[sub_resource type="DynamicFont" id=3]
-size = 43
-font_data = SubResource( 2 )
-
-[sub_resource type="RectangleShape2D" id=4]
-extents = Vector2( 30.4037, 348.825 )
+[sub_resource type="DynamicFont" id=11]
+size = 40
+font_data = SubResource( 10 )
 
 [node name="Board" type="Control"]
 script = ExtResource( 1 )
 __meta__ = {
+"_edit_horizontal_guides_": [ 59.8239 ],
 "_edit_use_anchors_": false
 }
 mudcrawler = ExtResource( 2 )
@@ -68,41 +76,54 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="MenuBackground" type="Panel" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Grid" type="Node2D" parent="."]
 script = ExtResource( 3 )
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="HUD" type="CanvasLayer" parent="."]
 
-[node name="Player1" type="Label" parent="CanvasLayer"]
+[node name="Player1" type="Label" parent="HUD" groups=[
+"menu_objects",
+]]
 margin_left = 10.0
 margin_top = 10.0
 margin_right = 194.0
 margin_bottom = 67.0
-custom_fonts/font = SubResource( 6 )
+custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 0.423529, 1, 0, 1 )
 text = "Player 1: "
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Player2" type="Label" parent="CanvasLayer"]
+[node name="Player2" type="Label" parent="HUD" groups=[
+"menu_objects",
+]]
 margin_left = 900.0
 margin_top = 10.0
 margin_right = 1084.0
 margin_bottom = 67.0
-custom_fonts/font = SubResource( 6 )
+custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 0.14902, 1, 0, 1 )
 text = "Player 2:"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Gold_Player1" type="Label" parent="CanvasLayer"]
+[node name="Gold_Player1" type="Label" parent="HUD" groups=[
+"menu_objects",
+]]
 margin_left = 175.6
 margin_top = 10.0
 margin_right = 270.6
 margin_bottom = 56.0
-custom_fonts/font = SubResource( 8 )
+custom_fonts/font = SubResource( 5 )
 custom_colors/font_color = Color( 0.92549, 0.929412, 0.172549, 1 )
 custom_colors/font_color_shadow = Color( 0.568627, 0.623529, 0, 1 )
 text = "Gold:"
@@ -110,12 +131,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Gold_Player2" type="Label" parent="CanvasLayer"]
+[node name="Gold_Player2" type="Label" parent="HUD" groups=[
+"menu_objects",
+]]
 margin_left = 1069.29
 margin_top = 10.0
 margin_right = 1164.29
 margin_bottom = 56.0
-custom_fonts/font = SubResource( 8 )
+custom_fonts/font = SubResource( 5 )
 custom_colors/font_color = Color( 0.92549, 0.929412, 0.172549, 1 )
 custom_colors/font_color_shadow = Color( 0.694118, 0.690196, 0, 1 )
 text = "Gold:"
@@ -123,12 +146,14 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Purchase_Monster" type="Button" parent="."]
+[node name="Purchase_Monster" type="Button" parent="." groups=[
+"menu_objects",
+]]
 margin_left = 559.0
 margin_top = 1.0
 margin_right = 893.0
 margin_bottom = 61.0
-custom_fonts/font = SubResource( 9 )
+custom_fonts/font = SubResource( 6 )
 text = "Purchase Monster"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -139,7 +164,7 @@ margin_left = 382.188
 margin_top = 3.90842
 margin_right = 552.188
 margin_bottom = 63.9084
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 8 )
 text = "Attacca"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -154,7 +179,7 @@ __meta__ = {
 }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Border1"]
-shape = SubResource( 4 )
+shape = SubResource( 9 )
 
 [node name="Border2" type="Area2D" parent="."]
 position = Vector2( 0, 350 )
@@ -163,7 +188,20 @@ __meta__ = {
 }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Border2"]
-shape = SubResource( 4 )
+shape = SubResource( 9 )
+
+[node name="MenuButton" type="Button" parent="."]
+margin_left = 1189.34
+margin_top = 647.447
+margin_right = 1300.34
+margin_bottom = 699.447
+custom_fonts/font = SubResource( 11 )
+text = "Menu"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="timeout" from="ButtonTimer" to="." method="_on_ButtonTimer_timeout"]
-[connection signal="pressed" from="Purchase_Monster" to="." method="_on_Purchase_Monster_pressed"]
+[connection signal="button_down" from="Purchase_Monster" to="." method="_on_Purchase_Monster_button_down"]
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
+[connection signal="button_down" from="MenuButton" to="." method="_on_MenuButton_button_down"]
+[connection signal="button_up" from="MenuButton" to="." method="_on_MenuButton_button_up"]

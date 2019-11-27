@@ -31,7 +31,9 @@ func _draw():
 	for y in range(0,8):
 		# horizontal lines from top to down
 		draw_line(Vector2(0, y*100), Vector2(1300, y*100), Color(30,40,110),2) 
-
+	
+	draw_line(Vector2(650,0), Vector2(650,700), Color.red, 10)
+	
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
